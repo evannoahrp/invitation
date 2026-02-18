@@ -6,8 +6,16 @@ function GiftsSection({ accounts, copiedKey, onCopy }) {
   return (
     <section className="space-y-6">
       <motion.h2 {...fadeInUp} className="section-title">
-        Wedding Gifts
+        Wedding Blessings
       </motion.h2>
+
+      <motion.p
+        {...fadeInUp}
+        transition={{ ...fadeInUp.transition, delay: 0.1 }}
+        className="max-w-2xl text-center mx-auto text-[var(--text-soft)] mb-6"
+      >
+        Your presence at our celebration is the greatest gift, yet if you desire to bestow a blessing...
+      </motion.p>
 
       <div className="grid gap-4 md:grid-cols-2">
         {accounts.map((item) => {
