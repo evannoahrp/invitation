@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import BackgroundMusic from "./components/BackgroundMusic";
 import DecorativeBackground from "./components/DecorativeBackground";
 import MobileQuickNav from "./components/MobileQuickNav";
 import SiteFooter from "./components/SiteFooter";
@@ -182,6 +183,7 @@ function App() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
+      <BackgroundMusic />
       <DecorativeBackground />
       <ProgressBar value={scrollProgress} />
 
