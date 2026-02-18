@@ -84,19 +84,26 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
           onReady: (event) => {
             try {
               event.target.setVolume?.(DEFAULT_VOLUME);
+              applyMuteState(mutedRef.current, true);
             } catch {
               // noop
             }
-
-            applyMuteState(mutedRef.current, true);
           },
           onStateChange: (event) => {
-            if (event.data === window.YT.PlayerState.ENDED) {
-              event.target.playVideo();
+            try {
+              if (event.data === window.YT.PlayerState.ENDED) {
+                event.target.playVideo();
+              }
+            } catch {
+              // noop
             }
           },
           onAutoplayBlocked: () => {
-            applyMuteState(true, true);
+            try {
+              applyMuteState(true, true);
+            } catch {
+              // noop
+            }
           }
         }
       });

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import BackgroundMusic from "./components/BackgroundMusic";
 import DecorativeBackground from "./components/DecorativeBackground";
+import LoadingScreen from "./components/LoadingScreen";
 import MobileQuickNav from "./components/MobileQuickNav";
 import SiteFooter from "./components/SiteFooter";
 import SiteHeader from "./components/SiteHeader";
@@ -9,6 +10,8 @@ import GallerySection from "./components/sections/GallerySection";
 import GiftsSection from "./components/sections/GiftsSection";
 import HeroSection from "./components/sections/HeroSection";
 import ProfilesSection from "./components/sections/ProfilesSection";
+import QuoteSection from "./components/sections/QuoteSection";
+import CarouselSection from "./components/sections/CarouselSection";
 import RsvpSection from "./components/sections/RsvpSection";
 import ProgressBar from "./components/ui/ProgressBar";
 import ToastMessage from "./components/ui/ToastMessage";
@@ -59,6 +62,7 @@ function App() {
   const [toast, setToast] = useAutoDismissMessage();
   const [copiedKey, setCopiedKey] = useState("");
   const [isMusicMuted, setIsMusicMuted] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [form, setForm] = useState({
     name: "",
     attendance: "",
@@ -66,6 +70,7 @@ function App() {
   });
   const [responses, setResponses] = useState([]);
   const [isLoadingRsvp, setIsLoadingRsvp] = useState(true);
+  const [hasUserScrolled, setHasUserScrolled] = useState(false);
   const copyResetTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -122,6 +127,41 @@ function App() {
       mounted = false;
     };
   }, [setToast]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds loading screen
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Remove automatic unmute - will be triggered by first scroll instead
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isLoading || hasUserScrolled) return;
+
+    const handleScroll = () => {
+      setHasUserScrolled(true);
+      setIsMusicMuted(false);
+      musicControllerRef.current?.setMuted(false);
+      musicControllerRef.current?.play();
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('touchmove', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
+    };
+  }, [isLoading, hasUserScrolled]);
 
   const navigateToSection = useCallback((id) => {
     scrollToId(id);
@@ -197,46 +237,54 @@ function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
+    <>
       <BackgroundMusic ref={musicControllerRef} isMuted={isMusicMuted} />
-      <DecorativeBackground />
-      <ProgressBar value={scrollProgress} />
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <div className="relative min-h-screen overflow-x-hidden bg-(--bg) text-(--text)">
+          <DecorativeBackground />
+          <ProgressBar value={scrollProgress} />
 
-      <SiteHeader
-        brand={INVITATION_BRAND}
-        navItems={NAV_ITEMS}
-        activeSection={activeSection}
-        onNavigate={navigateToSection}
-        isMusicMuted={isMusicMuted}
-        onToggleMusic={handleToggleMusic}
-      />
+          <SiteHeader
+            brand={INVITATION_BRAND}
+            navItems={NAV_ITEMS}
+            activeSection={activeSection}
+            onNavigate={navigateToSection}
+            isMusicMuted={isMusicMuted}
+            onToggleMusic={handleToggleMusic}
+          />
 
-      <main className="container-shell space-y-16 py-10 md:space-y-24">
-        <HeroSection
-          brand={INVITATION_BRAND}
-          guestName={guestName}
-          countdown={countdown}
-          onNavigate={navigateToSection}
-        />
-        <EventsSection events={EVENT_CARDS} />
-        <ProfilesSection profiles={COUPLE_BIODATA} />
-        <GallerySection images={GALLERY} />
-        <GiftsSection accounts={BANK_ACCOUNTS} copiedKey={copiedKey} onCopy={handleCopyAccount} />
-        <RsvpSection
-          form={form}
-          attendanceOptions={ATTENDANCE_OPTIONS}
-          onFieldChange={updateFormField}
-          onAttendanceChange={(attendance) => updateFormField("attendance", attendance)}
-          onSubmit={handleSubmitRsvp}
-          responses={responses}
-          isLoading={isLoadingRsvp}
-        />
-      </main>
+          <main className="container-shell space-y-16 py-10 md:space-y-24">
+            <HeroSection
+              brand={INVITATION_BRAND}
+              guestName={guestName}
+              countdown={countdown}
+              onNavigate={navigateToSection}
+            />
+            <EventsSection events={EVENT_CARDS} />
+            <CarouselSection />
+            <QuoteSection />
+            <ProfilesSection profiles={COUPLE_BIODATA} />
+            <GallerySection images={GALLERY} />
+            <GiftsSection accounts={BANK_ACCOUNTS} copiedKey={copiedKey} onCopy={handleCopyAccount} />
+            <RsvpSection
+              form={form}
+              attendanceOptions={ATTENDANCE_OPTIONS}
+              onFieldChange={updateFormField}
+              onAttendanceChange={(attendance) => updateFormField("attendance", attendance)}
+              onSubmit={handleSubmitRsvp}
+              responses={responses}
+              isLoading={isLoadingRsvp}
+            />
+          </main>
 
-      <SiteFooter brand={INVITATION_BRAND} />
-      <MobileQuickNav navItems={NAV_ITEMS} activeSection={activeSection} onNavigate={navigateToSection} />
-      <ToastMessage message={toast} />
-    </div>
+          <SiteFooter brand={INVITATION_BRAND} />
+          <MobileQuickNav navItems={NAV_ITEMS} activeSection={activeSection} onNavigate={navigateToSection} />
+          <ToastMessage message={toast} />
+        </div>
+      )}
+    </>
   );
 }
 

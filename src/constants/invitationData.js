@@ -47,7 +47,7 @@ export const COUPLE_BIODATA = [
     nickname: "Fila",
     fullName: "Apt. Fila Delfia, S.Farm.",
     childOrder: "Second child of two siblings",
-    parents: "Daughter of Mr. Agus Swi Susanto and Mrs. Sunarti",
+    parents: "Daughter of Mr. Agus Dwi Susanto and Mrs. Sunarti",
     fullBodyPhoto: "https://placehold.co/700x980/f4ece4/7a5d46?text=Bride+Full+Body+Photo"
   }
 ];
