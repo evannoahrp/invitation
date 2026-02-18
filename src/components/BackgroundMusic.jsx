@@ -1,78 +1,59 @@
-import { useEffect, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 
 const YOUTUBE_URL = "https://youtu.be/dt4Ueda_h6Y?si=d04Kvk2j7ESsaOqI";
 const VIDEO_ID = new URL(YOUTUBE_URL).pathname.replace("/", "");
 const API_SRC = "https://www.youtube.com/iframe_api";
-const INTERACTION_EVENTS = ["pointerdown", "touchstart", "keydown", "wheel"];
 const DEFAULT_VOLUME = 80;
 
-function BackgroundMusic() {
+const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, ref) {
   const playerRef = useRef(null);
   const containerIdRef = useRef(`bg-music-player-${Math.random().toString(36).slice(2)}`);
+  const mutedRef = useRef(isMuted);
 
-  useEffect(() => {
-    let isUnmounted = false;
-    let listenersAttached = false;
-    let hasAudioPermission = false;
-    let playbackCheckTimeoutId = null;
-    const previousReady = window.onYouTubeIframeAPIReady;
+  const applyMuteState = useCallback((nextMuted, forcePlay = false) => {
+    mutedRef.current = nextMuted;
+    const player = playerRef.current;
 
-    const clearPlaybackCheck = () => {
-      if (playbackCheckTimeoutId) {
-        window.clearTimeout(playbackCheckTimeoutId);
-        playbackCheckTimeoutId = null;
-      }
-    };
+    if (!player) {
+      return;
+    }
 
-    const tryPlay = (forceUnmute = false) => {
-      const player = playerRef.current;
-      if (!player) {
-        return;
+    try {
+      if (nextMuted) {
+        player.mute?.();
+      } else {
+        player.unMute?.();
+        player.setVolume?.(DEFAULT_VOLUME);
       }
 
-      try {
-        if (forceUnmute) {
-          hasAudioPermission = true;
-          player.unMute?.();
-          player.setVolume?.(DEFAULT_VOLUME);
-        } else {
-          player.mute?.();
-        }
-
+      if (forcePlay || player.getPlayerState?.() !== window.YT?.PlayerState.PLAYING) {
         player.playVideo?.();
+      }
+    } catch {
+      // noop
+    }
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    setMuted(nextMuted) {
+      applyMuteState(Boolean(nextMuted), true);
+    },
+    play() {
+      try {
+        playerRef.current?.playVideo?.();
       } catch {
         // noop
       }
-    };
+    }
+  }), [applyMuteState]);
 
-    const removeInteractionFallback = () => {
-      if (!listenersAttached) {
-        return;
-      }
+  useEffect(() => {
+    applyMuteState(isMuted, true);
+  }, [applyMuteState, isMuted]);
 
-      INTERACTION_EVENTS.forEach((eventName) => {
-        window.removeEventListener(eventName, onFirstInteraction);
-      });
-
-      listenersAttached = false;
-    };
-
-    const onFirstInteraction = () => {
-      tryPlay(true);
-      removeInteractionFallback();
-    };
-
-    const addInteractionFallback = () => {
-      if (listenersAttached) {
-        return;
-      }
-
-      INTERACTION_EVENTS.forEach((eventName) => {
-        window.addEventListener(eventName, onFirstInteraction, { passive: true, once: true });
-      });
-
-      listenersAttached = true;
-    };
+  useEffect(() => {
+    let isUnmounted = false;
+    const previousReady = window.onYouTubeIframeAPIReady;
 
     const createPlayer = () => {
       if (isUnmounted || !window.YT?.Player) {
@@ -102,37 +83,20 @@ function BackgroundMusic() {
         events: {
           onReady: (event) => {
             try {
-              event.target.mute?.();
               event.target.setVolume?.(DEFAULT_VOLUME);
             } catch {
               // noop
             }
 
-            tryPlay();
-            addInteractionFallback();
-
-            clearPlaybackCheck();
-            playbackCheckTimeoutId = window.setTimeout(() => {
-              const state = playerRef.current?.getPlayerState?.();
-              if (state === window.YT.PlayerState.PLAYING) {
-                return;
-              }
-
-              tryPlay();
-              addInteractionFallback();
-            }, 1600);
+            applyMuteState(mutedRef.current, true);
           },
           onStateChange: (event) => {
-            if (event.data === window.YT.PlayerState.PLAYING && hasAudioPermission) {
-              removeInteractionFallback();
-            }
-
             if (event.data === window.YT.PlayerState.ENDED) {
               event.target.playVideo();
             }
           },
           onAutoplayBlocked: () => {
-            addInteractionFallback();
+            applyMuteState(true, true);
           }
         }
       });
@@ -157,8 +121,6 @@ function BackgroundMusic() {
 
     return () => {
       isUnmounted = true;
-      clearPlaybackCheck();
-      removeInteractionFallback();
 
       if (window.onYouTubeIframeAPIReady === handleApiReady) {
         window.onYouTubeIframeAPIReady = previousReady;
@@ -169,7 +131,7 @@ function BackgroundMusic() {
         playerRef.current = null;
       }
     };
-  }, []);
+  }, [applyMuteState]);
 
   return (
     <div
@@ -179,6 +141,6 @@ function BackgroundMusic() {
       <div id={containerIdRef.current} />
     </div>
   );
-}
+});
 
 export default BackgroundMusic;

@@ -55,8 +55,10 @@ function App() {
   const scrollProgress = useScrollProgress();
   const guestName = useGuestName();
   const activeSection = useActiveSection(NAV_ITEMS.map((item) => item.id));
+  const musicControllerRef = useRef(null);
   const [toast, setToast] = useAutoDismissMessage();
   const [copiedKey, setCopiedKey] = useState("");
+  const [isMusicMuted, setIsMusicMuted] = useState(true);
   const [form, setForm] = useState({
     name: "",
     attendance: "",
@@ -181,9 +183,22 @@ function App() {
     }
   }, [form.attendance, form.message, form.name, setResponses, setToast]);
 
+  const handleToggleMusic = useCallback(() => {
+    setIsMusicMuted((prev) => {
+      const nextMuted = !prev;
+      musicControllerRef.current?.setMuted(nextMuted);
+
+      if (!nextMuted) {
+        musicControllerRef.current?.play();
+      }
+
+      return nextMuted;
+    });
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
-      <BackgroundMusic />
+      <BackgroundMusic ref={musicControllerRef} isMuted={isMusicMuted} />
       <DecorativeBackground />
       <ProgressBar value={scrollProgress} />
 
@@ -192,6 +207,8 @@ function App() {
         navItems={NAV_ITEMS}
         activeSection={activeSection}
         onNavigate={navigateToSection}
+        isMusicMuted={isMusicMuted}
+        onToggleMusic={handleToggleMusic}
       />
 
       <main className="container-shell space-y-16 py-10 md:space-y-24">
