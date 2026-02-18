@@ -5,9 +5,9 @@ export function useGuestName() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const to = params.get("to");
-    if (to) {
-      setGuestName(to.replace(/\+/g, " "));
+    const name = params.get("name") || params.get("to");
+    if (name) {
+      setGuestName(name.replace(/\+/g, " "));
     }
   }, []);
 
