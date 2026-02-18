@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown } from "lucide-react";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
@@ -99,39 +100,45 @@ function CustomSelect({
           <ChevronDown size={16} className={`select-icon ${isOpen ? "rotate-180" : ""}`} />
         </button>
 
-        {isOpen && (
-          <div
-            className="dropdown-menu"
-            role="listbox"
-            aria-label={label}
-            onKeyDown={handleKeyNavigation}
-          >
-            {options.map((option, index) => {
-              const isSelected = value === option;
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="dropdown-menu"
+              role="listbox"
+              aria-label={label}
+              onKeyDown={handleKeyNavigation}
+            >
+              {options.map((option, index) => {
+                const isSelected = value === option;
 
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  role="option"
-                  aria-selected={isSelected}
-                  ref={(node) => {
-                    optionRefs.current[index] = node;
-                  }}
-                  className={`dropdown-item ${isSelected ? "is-selected" : ""}`}
-                  onMouseEnter={() => setFocusedIndex(index)}
-                  onClick={() => {
-                    onChange(option);
-                    setIsOpen(false);
-                  }}
-                >
-                  <span>{option}</span>
-                  {isSelected ? <Check size={14} /> : null}
-                </button>
-              );
-            })}
-          </div>
-        )}
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    role="option"
+                    aria-selected={isSelected}
+                    ref={(node) => {
+                      optionRefs.current[index] = node;
+                    }}
+                    className={`dropdown-item ${isSelected ? "is-selected" : ""}`}
+                    onMouseEnter={() => setFocusedIndex(index)}
+                    onClick={() => {
+                      onChange(option);
+                      setIsOpen(false);
+                    }}
+                  >
+                    <span>{option}</span>
+                    {isSelected ? <Check size={14} /> : null}
+                  </button>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,37 +1,62 @@
 import { motion } from "framer-motion";
 
-function LoadingScreen() {
+function LoadingScreen({ onReady }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)]">
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)]"
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-center"
+        className="text-center space-y-8"
       >
+        {/* Logo/Brand Section */}
         <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="mx-auto mb-4 h-12 w-12 border-4 border-(--primary) border-t-transparent rounded-full"
-        />
-        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-heading text-(--text)">
+            Evan & Fila
+          </h1>
+          <p className="text-sm mt-2 text-(--text-soft) tracking-wider">
+            Wedding Invitation
+          </p>
+        </motion.div>
+
+        {/* Main Image/Quote Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="space-y-4"
+        >
+          <p className="text-sm md:text-base italic text-(--text) max-w-xs mx-auto leading-relaxed">
+            "Love is patient, love is kind"
+          </p>
+          <p className="text-xs text-(--text-soft)">
+            July 4, 2026
+          </p>
+        </motion.div>
+
+        {/* Call to Action Button */}
+        <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-2xl font-heading text-(--text)"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          onClick={onReady}
+          className="btn-primary mx-auto"
         >
-          Evan & Fila
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-(--text-soft)"
-        >
-          Loading...
-        </motion.p>
+          Tap to Open
+        </motion.button>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

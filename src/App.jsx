@@ -62,7 +62,8 @@ function App() {
   const [toast, setToast] = useAutoDismissMessage();
   const [copiedKey, setCopiedKey] = useState("");
   const [isMusicMuted, setIsMusicMuted] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [form, setForm] = useState({
     name: "",
     attendance: "",
@@ -128,22 +129,31 @@ function App() {
     };
   }, [setToast]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // 2 seconds loading screen
+  const handleSplashOpen = () => {
+    setShowSplash(false);
+    setHasUserScrolled(true); // Mark as scrolled to skip scroll listener
+    setIsMusicMuted(false);
+    musicControllerRef.current?.setMuted(false);
+    musicControllerRef.current?.play();
+    // Re-enable body scroll
+    document.body.style.overflow = 'auto';
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
-
+  // Disable body scroll when splash screen is active
   useEffect(() => {
-    if (!isLoading) {
-      // Remove automatic unmute - will be triggered by first scroll instead
+    if (showSplash) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
     }
-  }, [isLoading]);
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showSplash]);
 
   useEffect(() => {
-    if (isLoading || hasUserScrolled) return;
+    if (hasUserScrolled || showSplash) return;
 
     const handleScroll = () => {
       setHasUserScrolled(true);
@@ -161,7 +171,7 @@ function App() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('touchmove', handleScroll);
     };
-  }, [isLoading, hasUserScrolled]);
+  }, [showSplash, hasUserScrolled]);
 
   const navigateToSection = useCallback((id) => {
     scrollToId(id);
@@ -239,8 +249,8 @@ function App() {
   return (
     <>
       <BackgroundMusic ref={musicControllerRef} isMuted={isMusicMuted} />
-      {isLoading ? (
-        <LoadingScreen />
+      {showSplash ? (
+        <LoadingScreen onReady={handleSplashOpen} />
       ) : (
         <div className="relative min-h-screen overflow-x-hidden bg-(--bg) text-(--text)">
           <DecorativeBackground />
