@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 
-const VIDEO_ID = "dt4Ueda_h6Y";
+const YOUTUBE_URL = "https://youtu.be/dt4Ueda_h6Y?si=d04Kvk2j7ESsaOqI";
+const VIDEO_ID = new URL(YOUTUBE_URL).pathname.replace("/", "");
 const API_SRC = "https://www.youtube.com/iframe_api";
+const INTERACTION_EVENTS = ["pointerdown", "touchstart", "keydown", "wheel"];
+const DEFAULT_VOLUME = 80;
 
 function BackgroundMusic() {
   const playerRef = useRef(null);
@@ -9,7 +12,67 @@ function BackgroundMusic() {
 
   useEffect(() => {
     let isUnmounted = false;
+    let listenersAttached = false;
+    let hasAudioPermission = false;
+    let playbackCheckTimeoutId = null;
     const previousReady = window.onYouTubeIframeAPIReady;
+
+    const clearPlaybackCheck = () => {
+      if (playbackCheckTimeoutId) {
+        window.clearTimeout(playbackCheckTimeoutId);
+        playbackCheckTimeoutId = null;
+      }
+    };
+
+    const tryPlay = (forceUnmute = false) => {
+      const player = playerRef.current;
+      if (!player) {
+        return;
+      }
+
+      try {
+        if (forceUnmute) {
+          hasAudioPermission = true;
+          player.unMute?.();
+          player.setVolume?.(DEFAULT_VOLUME);
+        } else {
+          player.mute?.();
+        }
+
+        player.playVideo?.();
+      } catch {
+        // noop
+      }
+    };
+
+    const removeInteractionFallback = () => {
+      if (!listenersAttached) {
+        return;
+      }
+
+      INTERACTION_EVENTS.forEach((eventName) => {
+        window.removeEventListener(eventName, onFirstInteraction);
+      });
+
+      listenersAttached = false;
+    };
+
+    const onFirstInteraction = () => {
+      tryPlay(true);
+      removeInteractionFallback();
+    };
+
+    const addInteractionFallback = () => {
+      if (listenersAttached) {
+        return;
+      }
+
+      INTERACTION_EVENTS.forEach((eventName) => {
+        window.addEventListener(eventName, onFirstInteraction, { passive: true, once: true });
+      });
+
+      listenersAttached = true;
+    };
 
     const createPlayer = () => {
       if (isUnmounted || !window.YT?.Player) {
@@ -30,6 +93,7 @@ function BackgroundMusic() {
           disablekb: 1,
           fs: 0,
           loop: 1,
+          mute: 1,
           modestbranding: 1,
           playsinline: 1,
           rel: 0,
@@ -37,12 +101,38 @@ function BackgroundMusic() {
         },
         events: {
           onReady: (event) => {
-            event.target.playVideo();
+            try {
+              event.target.mute?.();
+              event.target.setVolume?.(DEFAULT_VOLUME);
+            } catch {
+              // noop
+            }
+
+            tryPlay();
+            addInteractionFallback();
+
+            clearPlaybackCheck();
+            playbackCheckTimeoutId = window.setTimeout(() => {
+              const state = playerRef.current?.getPlayerState?.();
+              if (state === window.YT.PlayerState.PLAYING) {
+                return;
+              }
+
+              tryPlay();
+              addInteractionFallback();
+            }, 1600);
           },
           onStateChange: (event) => {
+            if (event.data === window.YT.PlayerState.PLAYING && hasAudioPermission) {
+              removeInteractionFallback();
+            }
+
             if (event.data === window.YT.PlayerState.ENDED) {
               event.target.playVideo();
             }
+          },
+          onAutoplayBlocked: () => {
+            addInteractionFallback();
           }
         }
       });
@@ -67,6 +157,8 @@ function BackgroundMusic() {
 
     return () => {
       isUnmounted = true;
+      clearPlaybackCheck();
+      removeInteractionFallback();
 
       if (window.onYouTubeIframeAPIReady === handleApiReady) {
         window.onYouTubeIframeAPIReady = previousReady;
