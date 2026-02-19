@@ -326,3 +326,7 @@ textarea {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
+
+.pt-10 {
+    padding-top: calc(var(--spacing) * 10);
+}

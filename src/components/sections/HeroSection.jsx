@@ -12,7 +12,7 @@ function HeroSection({ brand, guestName, countdown, onNavigate }) {
   ];
 
   return (
-    <section id="home" className="section-hero">
+    <section id="home" className="section-hero pt-10">
       <motion.div {...fadeInUp} className="space-y-6">
         <span className="chip">
           <Sparkles size={15} /> Wedding Invitation
