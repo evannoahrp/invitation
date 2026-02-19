@@ -34,13 +34,7 @@ function SiteHeader({ brand, navItems, activeSection, onNavigate, isMusicMuted, 
 
   return (
     <>
-      <header
-        className={`${
-          isMobile ? "sticky top-0" : "fixed top-0 left-0 right-0"
-        } z-40 border-b border-[var(--border)]/70 bg-[var(--bg)]/75 backdrop-blur-md transition-transform duration-300 ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
+      <header className="fixed top-0 left-0 right-0 z-40 border-b border-[var(--border)]/70 bg-[var(--bg)]/75 backdrop-blur-md transition-transform duration-300 translate-y-0">
         <nav className="container-shell flex items-center justify-between py-4">
           <button className="font-heading text-lg tracking-wide" onClick={() => onNavigate("home")} type="button">
             {brand}
