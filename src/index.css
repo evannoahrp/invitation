@@ -232,11 +232,13 @@ textarea {
   flex-shrink: 0;
   color: var(--text-soft);
   pointer-events: none;
-  transition: transform 160ms ease;
 }
 
-.select-icon.rotate-180 {
-  transform: rotate(180deg);
+.select-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
 }
 
 .dropdown-menu {

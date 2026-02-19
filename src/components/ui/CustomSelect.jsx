@@ -97,7 +97,14 @@ function CustomSelect({
           aria-expanded={isOpen}
         >
           <span>{value || placeholder}</span>
-          <ChevronDown size={16} className={`select-icon ${isOpen ? "rotate-180" : ""}`} />
+          <motion.span
+            className="select-icon-wrap"
+            initial={false}
+            animate={{ rotate: isOpen ? 180 : 0, y: isOpen ? -1 : 0 }}
+            transition={{ type: "spring", stiffness: 360, damping: 26, mass: 0.65 }}
+          >
+            <ChevronDown size={16} className="select-icon" aria-hidden="true" />
+          </motion.span>
         </button>
 
         <AnimatePresence>

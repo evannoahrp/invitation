@@ -62,7 +62,6 @@ function App() {
   const [toast, setToast] = useAutoDismissMessage();
   const [copiedKey, setCopiedKey] = useState("");
   const [isMusicMuted, setIsMusicMuted] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [form, setForm] = useState({
     name: "",
