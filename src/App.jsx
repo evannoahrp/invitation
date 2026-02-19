@@ -18,6 +18,7 @@ import ToastMessage from "./components/ui/ToastMessage";
 import {
   ATTENDANCE_OPTIONS,
   BANK_ACCOUNTS,
+  CAROUSEL_IMAGES,
   COUPLE_BIODATA,
   EVENT_CARDS,
   GALLERY,
@@ -70,6 +71,7 @@ function App() {
   });
   const [responses, setResponses] = useState([]);
   const [isLoadingRsvp, setIsLoadingRsvp] = useState(true);
+  const [isSubmittingRsvp, setIsSubmittingRsvp] = useState(false);
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
   const copyResetTimeoutRef = useRef(null);
 
@@ -98,6 +100,23 @@ function App() {
     },
     []
   );
+
+  useEffect(() => {
+    const firstCarouselImage = CAROUSEL_IMAGES[0]?.src;
+    if (!firstCarouselImage) {
+      return undefined;
+    }
+
+    const preloadLink = document.createElement("link");
+    preloadLink.rel = "preload";
+    preloadLink.as = "image";
+    preloadLink.href = firstCarouselImage;
+    document.head.appendChild(preloadLink);
+
+    return () => {
+      document.head.removeChild(preloadLink);
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -201,10 +220,26 @@ function App() {
   const handleSubmitRsvp = useCallback(async (event) => {
     event.preventDefault();
 
-    if (!form.name.trim() || !form.attendance) {
+    const trimmedName = form.name.trim();
+    const trimmedMessage = form.message.trim();
+
+    if (!trimmedName || !form.attendance) {
       setToast("Name and attendance confirmation are required.");
       return;
     }
+
+    const optimisticId = `pending-${Date.now()}`;
+    const optimisticEntry = {
+      id: optimisticId,
+      name: trimmedName,
+      attendance: form.attendance,
+      message: trimmedMessage,
+      createdAt: new Date().toISOString(),
+      isOptimistic: true
+    };
+
+    setResponses((prev) => [optimisticEntry, ...prev].slice(0, 20));
+    setIsSubmittingRsvp(true);
 
     try {
       const response = await requestRsvpApi({
@@ -213,9 +248,9 @@ function App() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name: form.name.trim(),
+          name: trimmedName,
           attendance: form.attendance,
-          message: form.message.trim()
+          message: trimmedMessage
         })
       });
 
@@ -224,13 +259,19 @@ function App() {
       }
 
       const savedEntry = await response.json();
-      setResponses((prev) => [savedEntry, ...prev].slice(0, 20));
+      setResponses((prev) => {
+        const withoutOptimistic = prev.filter((item) => item.id !== optimisticId);
+        return [savedEntry, ...withoutOptimistic].slice(0, 20);
+      });
       setForm((prev) => ({ ...prev, attendance: "", message: "" }));
       setToast("Thank you. Your RSVP has been received.");
     } catch {
+      setResponses((prev) => prev.filter((item) => item.id !== optimisticId));
       setToast("Your RSVP could not be submitted. Please try again.");
+    } finally {
+      setIsSubmittingRsvp(false);
     }
-  }, [form.attendance, form.message, form.name, setResponses, setToast]);
+  }, [form.attendance, form.message, form.name, setToast]);
 
   const handleToggleMusic = useCallback(() => {
     setIsMusicMuted((prev) => {
@@ -285,6 +326,7 @@ function App() {
               onSubmit={handleSubmitRsvp}
               responses={responses}
               isLoading={isLoadingRsvp}
+              isSubmitting={isSubmittingRsvp}
             />
           </main>
 

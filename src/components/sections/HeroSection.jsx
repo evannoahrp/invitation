@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { CalendarDays, Send, Sparkles } from "lucide-react";
 import { fadeInUp } from "../../constants/motion";
+import { WEDDING_DATE_LABEL } from "../../constants/invitationData";
 import { padNumber } from "../../utils/time";
 
 function HeroSection({ brand, guestName, countdown, onNavigate }) {
@@ -35,7 +36,7 @@ function HeroSection({ brand, guestName, countdown, onNavigate }) {
       </motion.div>
 
       <motion.div {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }} className="glass-card p-6 md:p-8">
-        <p className="mb-3 text-sm uppercase tracking-[0.18em] text-[var(--text-soft)]">Saturday, July 4, 2026</p>
+        <p className="mb-3 text-sm uppercase tracking-[0.18em] text-[var(--text-soft)]">{WEDDING_DATE_LABEL}</p>
 
         {!countdown.ended ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

@@ -17,3 +17,13 @@ export function getCountdownParts(targetTime) {
 export function padNumber(value) {
   return String(value).padStart(2, "0");
 }
+
+export function formatEventDate(timestamp, locale = "en-US", timeZone = "Asia/Jakarta") {
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone
+  }).format(timestamp);
+}
