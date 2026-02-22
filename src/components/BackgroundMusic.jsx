@@ -10,6 +10,8 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
   const containerIdRef = useRef(`bg-music-player-${Math.random().toString(36).slice(2)}`);
   const mutedRef = useRef(isMuted);
   const warnedKeysRef = useRef(new Set());
+  const needsGestureUnlockRef = useRef(false);
+  const unregisterGestureUnlockRef = useRef(null);
 
   const reportIssue = useCallback((key, message, error) => {
     if (!import.meta.env.DEV || warnedKeysRef.current.has(key)) {
@@ -20,11 +22,58 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
     console.warn(`[BackgroundMusic] ${message}`, error);
   }, []);
 
+  const clearGestureUnlock = useCallback(() => {
+    if (typeof unregisterGestureUnlockRef.current === "function") {
+      unregisterGestureUnlockRef.current();
+      unregisterGestureUnlockRef.current = null;
+    }
+  }, []);
+
+  const registerGestureUnlock = useCallback(() => {
+    if (unregisterGestureUnlockRef.current || typeof document === "undefined") {
+      return;
+    }
+
+    const unlock = () => {
+      const player = playerRef.current;
+      if (!player || mutedRef.current) {
+        return;
+      }
+
+      try {
+        player.unMute?.();
+        player.setVolume?.(DEFAULT_VOLUME);
+        player.playVideo?.();
+        needsGestureUnlockRef.current = false;
+        clearGestureUnlock();
+      } catch (error) {
+        reportIssue("gesture-unlock", "Unable to unlock background music via user gesture.", error);
+      }
+    };
+
+    document.addEventListener("pointerdown", unlock, { passive: true });
+    document.addEventListener("keydown", unlock);
+
+    unregisterGestureUnlockRef.current = () => {
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+    };
+  }, [clearGestureUnlock, reportIssue]);
+
   const applyMuteState = useCallback((nextMuted, forcePlay = false) => {
     mutedRef.current = nextMuted;
     const player = playerRef.current;
 
+    if (nextMuted) {
+      needsGestureUnlockRef.current = false;
+      clearGestureUnlock();
+    }
+
     if (!player) {
+      if (!nextMuted) {
+        needsGestureUnlockRef.current = true;
+        registerGestureUnlock();
+      }
       return;
     }
 
@@ -34,15 +83,26 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
       } else {
         player.unMute?.();
         player.setVolume?.(DEFAULT_VOLUME);
+        if (player.isMuted?.()) {
+          needsGestureUnlockRef.current = true;
+          registerGestureUnlock();
+        } else {
+          needsGestureUnlockRef.current = false;
+          clearGestureUnlock();
+        }
       }
 
       if (forcePlay || player.getPlayerState?.() !== window.YT?.PlayerState.PLAYING) {
         player.playVideo?.();
       }
     } catch (error) {
+      if (!nextMuted) {
+        needsGestureUnlockRef.current = true;
+        registerGestureUnlock();
+      }
       reportIssue("apply-mute-state", "Unable to apply mute/playback state.", error);
     }
-  }, [reportIssue]);
+  }, [clearGestureUnlock, registerGestureUnlock, reportIssue]);
 
   useImperativeHandle(ref, () => ({
     setMuted(nextMuted) {
@@ -110,7 +170,10 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
           },
           onAutoplayBlocked: () => {
             try {
-              applyMuteState(true, true);
+              if (!mutedRef.current) {
+                needsGestureUnlockRef.current = true;
+                registerGestureUnlock();
+              }
             } catch (error) {
               reportIssue("autoplay-blocked", "Autoplay was blocked by the browser.", error);
             }
@@ -150,8 +213,10 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
         playerRef.current.destroy();
         playerRef.current = null;
       }
+
+      clearGestureUnlock();
     };
-  }, [applyMuteState, reportIssue]);
+  }, [applyMuteState, clearGestureUnlock, registerGestureUnlock, reportIssue]);
 
   return (
     <div
