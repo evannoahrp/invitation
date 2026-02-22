@@ -305,7 +305,7 @@ function App() {
             onToggleMusic={handleToggleMusic}
           />
 
-          <main className="container-shell space-y-16 py-10 md:space-y-24">
+          <main className="container-shell relative z-10 space-y-16 py-10 md:space-y-24">
             <HeroSection
               brand={INVITATION_BRAND}
               guestName={guestName}
@@ -330,7 +330,9 @@ function App() {
             />
           </main>
 
-          <SiteFooter brand={INVITATION_BRAND} />
+          <div className="relative z-10">
+            <SiteFooter brand={INVITATION_BRAND} />
+          </div>
           <MobileQuickNav navItems={NAV_ITEMS} activeSection={activeSection} onNavigate={navigateToSection} />
           <ToastMessage message={toast} />
         </div>

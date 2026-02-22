@@ -2,12 +2,12 @@
 @plugin "@tailwindcss/forms/src/index.js";
 
 :root {
-  --bg: #f8f4ef;
-  --text: #222222;
-  --text-soft: #635f5a;
-  --accent: #b17e59;
-  --accent-soft: #ecd8c7;
-  --border: #dac9bb;
+  --bg: #f3efe8;
+  --text: #2b3526;
+  --text-soft: #5f6b55;
+  --accent: #7d2432;
+  --accent-soft: #e8dfd2;
+  --border: #b8bea9;
 }
 
 * {
@@ -25,6 +25,8 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif;
   color: var(--text);
   background-color: var(--bg);
+  background-image: radial-gradient(circle at 15% 18%, color-mix(in srgb, var(--accent-soft) 72%, white) 0%, transparent 40%),
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--accent) 20%, white) 0%, transparent 34%);
 }
 
 button,
@@ -43,42 +45,154 @@ textarea {
   margin-inline: auto;
 }
 
-.blob {
+.decorative-bg {
+  isolation: isolate;
+}
+
+.decor-base-layer,
+.decor-floral-shadow-layer,
+.decor-floral-layer,
+.decor-highlight-layer,
+.decor-vignette,
+.decor-grain {
   position: absolute;
-  width: 30rem;
-  aspect-ratio: 1;
-  border-radius: 9999px;
-  filter: blur(60px);
-  opacity: 0.35;
-  animation: float 12s ease-in-out infinite;
+  inset: 0;
 }
 
-.blob-1 {
-  background: #f4d9bf;
+.decor-base-layer {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 14% 12%, color-mix(in srgb, var(--accent-soft) 82%, white) 0%, transparent 38%),
+    radial-gradient(circle at 84% 88%, color-mix(in srgb, #657754 66%, white) 0%, transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 88%, white) 0%, color-mix(in srgb, var(--accent-soft) 56%, var(--bg)) 100%);
+}
+
+.decor-floral-shadow-layer {
+  z-index: 2;
+  opacity: 0.2;
+  filter: blur(20px);
+  background:
+    radial-gradient(ellipse at 16% 14%, color-mix(in srgb, var(--accent) 60%, transparent) 0%, transparent 48%),
+    radial-gradient(ellipse at 86% 84%, color-mix(in srgb, #6a7d58 60%, transparent) 0%, transparent 44%),
+    radial-gradient(ellipse at 26% 46%, color-mix(in srgb, #5f6b55 48%, transparent) 0%, transparent 38%);
+}
+
+.decor-floral-layer {
+  z-index: 3;
+  will-change: transform;
+}
+
+.decor-floral-sub-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.floral-depth-1 {
+  z-index: 1;
+}
+
+.floral-depth-2 {
+  z-index: 4;
+}
+
+.floral-depth-3 {
+  z-index: 2;
+}
+
+.floral-depth-4 {
+  z-index: 3;
+}
+
+.floral-asset {
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  filter: blur(0.12px);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.floral-top-left {
   top: -7rem;
-  left: -8rem;
+  left: -7rem;
+  width: clamp(12rem, 24vw, 19rem);
+  opacity: 0.22;
 }
 
-.blob-2 {
-  background: #d9c2ff;
-  bottom: -8rem;
-  right: -6rem;
-  animation-delay: -5s;
+.floral-bottom-right {
+  right: -6.5rem;
+  bottom: -5.5rem;
+  width: clamp(12rem, 25vw, 19.5rem);
+  opacity: 0.24;
+}
+
+.floral-mid-left {
+  top: 56vh;
+  left: clamp(0.5rem, 4vw, 2.5rem);
+  width: clamp(6.5rem, 11vw, 9rem);
+  opacity: 0.15;
+}
+
+.floral-mid-right {
+  top: 6vh;
+  right: clamp(1.2rem, 7vw, 5rem);
+  width: clamp(6rem, 10vw, 8.5rem);
+  opacity: 0.14;
+}
+
+.decor-highlight-layer {
+  z-index: 4;
+  opacity: 0.15;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0) 34%),
+    radial-gradient(circle at 68% 22%, rgba(255, 255, 255, 0.24) 0%, transparent 35%);
+}
+
+.decor-vignette {
+  z-index: 5;
+  opacity: 0.2;
+  background: radial-gradient(circle at center, transparent 58%, rgba(47, 55, 41, 0.12) 100%);
+}
+
+.decor-grain {
+  z-index: 6;
+  opacity: 0.03;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.7) 0 0.7px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.62) 0 0.8px, transparent 1px);
+  background-size: 3px 3px, 4px 4px;
+  mix-blend-mode: multiply;
 }
 
 @media (max-width: 768px) {
-  .blob {
-    width: 18rem;
+  .floral-top-left {
+    top: -4.5rem;
+    left: -4.5rem;
+    width: clamp(8.5rem, 36vw, 11rem);
+    opacity: 0.19;
   }
-}
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
+  .floral-bottom-right {
+    right: -4.5rem;
+    bottom: -3.5rem;
+    width: clamp(9rem, 40vw, 12rem);
+    opacity: 0.2;
   }
-  50% {
-    transform: translate(12px, -16px) scale(1.06);
+
+  .floral-mid-left {
+    top: 60vh;
+    left: 0.5rem;
+    width: clamp(5.5rem, 24vw, 7rem);
+    opacity: 0.12;
+  }
+
+  .floral-mid-right {
+    top: 10vh;
+    right: 0.6rem;
+    width: clamp(5.5rem, 22vw, 7rem);
+    opacity: 0.11;
   }
 }
 
@@ -97,10 +211,11 @@ textarea {
 }
 
 .glass-card {
-  border: 1px solid color-mix(in srgb, var(--border) 90%, white);
+  border: 1px solid color-mix(in srgb, var(--border) 92%, white);
   border-radius: 1.5rem;
-  background: color-mix(in srgb, white 80%, var(--bg));
-  box-shadow: 0 8px 26px rgba(40, 28, 20, 0.08);
+  background: linear-gradient(160deg, color-mix(in srgb, white 76%, var(--bg)) 0%, color-mix(in srgb, var(--accent-soft) 58%, white) 100%);
+  box-shadow: 0 16px 36px rgba(52, 42, 34, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  backdrop-filter: blur(14px) saturate(1.08);
 }
 
 .section-title {
@@ -120,8 +235,8 @@ textarea {
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-soft);
-  background: rgba(255, 255, 255, 0.65);
+  color: color-mix(in srgb, var(--accent) 60%, var(--text));
+  background: color-mix(in srgb, white 80%, var(--accent-soft));
 }
 
 .btn-primary,
@@ -140,29 +255,30 @@ textarea {
 
 .btn-primary {
   color: white;
-  background: linear-gradient(130deg, #be875f, #9a6845);
+  background: linear-gradient(130deg, color-mix(in srgb, var(--accent) 84%, #2b3526), var(--accent));
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 16px rgba(105, 66, 38, 0.25);
+  box-shadow: 0 10px 16px rgba(86, 28, 40, 0.28);
 }
 
 .btn-secondary,
 .nav-btn {
   border-color: var(--border);
-  background: rgba(255, 255, 255, 0.7);
+  background: color-mix(in srgb, white 70%, var(--bg));
   color: var(--text);
+  backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover,
 .nav-btn:hover {
-  background: white;
+  background: color-mix(in srgb, white 85%, var(--accent-soft));
 }
 
 .nav-btn.is-active {
-  border-color: color-mix(in srgb, var(--accent) 55%, white);
-  background: color-mix(in srgb, white 70%, var(--accent-soft));
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 82%, white);
 }
 
 .btn-primary:focus-visible,
@@ -173,7 +289,7 @@ textarea {
 .dropdown-item:focus-visible,
 .dropdown-trigger:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(177, 126, 89, 0.2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 26%, transparent);
 }
 
 .row-detail {
@@ -203,8 +319,8 @@ textarea {
 }
 
 .input:focus {
-  border-color: color-mix(in srgb, var(--accent) 65%, white);
-  box-shadow: 0 0 0 3px rgba(177, 126, 89, 0.18);
+  border-color: color-mix(in srgb, var(--accent) 56%, white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .custom-dropdown {
@@ -249,9 +365,9 @@ textarea {
   border: 1px solid var(--border);
   border-radius: 0.95rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 14px 24px rgba(62, 45, 32, 0.14);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, color-mix(in srgb, white 84%, var(--bg)) 0%, color-mix(in srgb, var(--accent-soft) 44%, white) 100%);
+  box-shadow: 0 18px 30px rgba(62, 45, 32, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px) saturate(1.06);
 }
 
 .dropdown-item {
@@ -270,13 +386,13 @@ textarea {
 }
 
 .dropdown-item:hover {
-  background: rgba(177, 126, 89, 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, white);
 }
 
 .dropdown-item.is-selected {
-  color: #7f563a;
+  color: color-mix(in srgb, var(--accent) 72%, var(--text));
   font-weight: 600;
-  background: rgba(177, 126, 89, 0.14);
+  background: color-mix(in srgb, var(--accent) 14%, white);
 }
 
 .mobile-nav {
@@ -292,9 +408,9 @@ textarea {
   padding: 0.4rem;
   border-radius: 1.1rem;
   border: 1px solid color-mix(in srgb, var(--border) 85%, white);
-  background: color-mix(in srgb, white 76%, var(--bg));
-  box-shadow: 0 10px 24px rgba(43, 28, 16, 0.12);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(180deg, color-mix(in srgb, white 80%, var(--bg)) 0%, color-mix(in srgb, var(--accent-soft) 48%, white) 100%);
+  box-shadow: 0 14px 28px rgba(43, 28, 16, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
 }
 
 .mobile-nav-btn {
@@ -314,8 +430,43 @@ textarea {
 }
 
 .mobile-nav-btn.is-active {
-  color: #7b573d;
-  background: rgba(177, 126, 89, 0.16);
+  color: color-mix(in srgb, var(--accent) 72%, var(--text));
+  background: color-mix(in srgb, var(--accent) 14%, white);
+}
+
+.hero-frame {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, white);
+  background: linear-gradient(180deg, color-mix(in srgb, white 76%, var(--bg)) 0%, color-mix(in srgb, var(--accent-soft) 58%, white) 100%);
+  box-shadow: 0 16px 30px rgba(44, 36, 30, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(12px);
+}
+
+.countdown-tile {
+  border: 1px solid color-mix(in srgb, var(--border) 90%, white);
+  background: color-mix(in srgb, white 68%, var(--accent-soft));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+.section-heading-accent {
+  color: color-mix(in srgb, var(--accent) 50%, var(--text));
+}
+
+.section-frame {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, white);
+  background: linear-gradient(172deg, color-mix(in srgb, white 78%, var(--bg)) 0%, color-mix(in srgb, var(--accent-soft) 60%, white) 100%);
+  box-shadow: 0 14px 26px rgba(52, 41, 34, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(12px);
+}
+
+.gallery-frame {
+  border: 1px solid color-mix(in srgb, var(--border) 85%, white);
+  box-shadow: 0 14px 24px rgba(50, 39, 31, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.52);
+}
+
+.rsvp-entry {
+  border: 1px solid color-mix(in srgb, var(--border) 84%, white);
+  background: color-mix(in srgb, white 66%, var(--accent-soft));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
 }
 
 @media (min-width: 768px) {

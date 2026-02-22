@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 
-const YOUTUBE_URL = "https://youtu.be/dt4Ueda_h6Y?si=d04Kvk2j7ESsaOqI";
+const YOUTUBE_URL = "https://youtu.be/DNbKs0Na_sc?si=ZejG7424uf3ull39";
 const VIDEO_ID = new URL(YOUTUBE_URL).pathname.replace("/", "");
 const API_SRC = "https://www.youtube.com/iframe_api";
 const DEFAULT_VOLUME = 80;

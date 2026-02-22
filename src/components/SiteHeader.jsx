@@ -36,7 +36,7 @@ function SiteHeader({ brand, navItems, activeSection, onNavigate, isMusicMuted, 
     <>
       <header className="fixed top-0 left-0 right-0 z-40 border-b border-[var(--border)]/70 bg-[var(--bg)]/75 backdrop-blur-md transition-transform duration-300 translate-y-0">
         <nav className="container-shell flex items-center justify-between py-4">
-          <button className="font-heading text-lg tracking-wide" onClick={() => onNavigate("home")} type="button">
+          <button className="font-heading text-lg tracking-[0.08em] text-(--accent)" onClick={() => onNavigate("home")} type="button">
             {brand}
           </button>
 
@@ -67,8 +67,7 @@ function SiteHeader({ brand, navItems, activeSection, onNavigate, isMusicMuted, 
           </div>
         </nav>
       </header>
-      {/* Spacer for fixed header on desktop */}
-      {!isMobile && <div className="h-[73px]" />}
+      <div className="h-18.25" />
     </>
   );
 }
