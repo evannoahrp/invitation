@@ -47,6 +47,7 @@ textarea {
 
 .decorative-bg {
   isolation: isolate;
+  position: fixed;
 }
 
 .decor-base-layer,
@@ -167,6 +168,10 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  .decorative-bg {
+    position: absolute;
+  }
+
   .floral-top-left {
     top: -4.5rem;
     left: -4.5rem;
