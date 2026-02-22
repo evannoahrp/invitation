@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { CalendarDays, Send, Sparkles } from "lucide-react";
 import { fadeInUp } from "../../constants/motion";
+import { WEDDING_DATE_LABEL } from "../../constants/invitationData";
 import { padNumber } from "../../utils/time";
 
 function HeroSection({ brand, guestName, countdown, onNavigate }) {

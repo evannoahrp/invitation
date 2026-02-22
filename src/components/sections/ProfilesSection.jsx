@@ -20,8 +20,11 @@ function ProfilesSection({ profiles }) {
               <img
                 src={person.fullBodyPhoto}
                 alt={`${person.role} full body portrait`}
+                width="700"
+                height="980"
                 className="h-80 w-full object-cover md:h-[28rem]"
                 loading="lazy"
+                decoding="async"
               />
             </figure>
             <p className="chip inline-flex">{person.role}</p>

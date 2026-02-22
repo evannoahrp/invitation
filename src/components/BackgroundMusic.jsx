@@ -9,6 +9,16 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
   const playerRef = useRef(null);
   const containerIdRef = useRef(`bg-music-player-${Math.random().toString(36).slice(2)}`);
   const mutedRef = useRef(isMuted);
+  const warnedKeysRef = useRef(new Set());
+
+  const reportIssue = useCallback((key, message, error) => {
+    if (!import.meta.env.DEV || warnedKeysRef.current.has(key)) {
+      return;
+    }
+
+    warnedKeysRef.current.add(key);
+    console.warn(`[BackgroundMusic] ${message}`, error);
+  }, []);
 
   const applyMuteState = useCallback((nextMuted, forcePlay = false) => {
     mutedRef.current = nextMuted;
@@ -29,10 +39,10 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
       if (forcePlay || player.getPlayerState?.() !== window.YT?.PlayerState.PLAYING) {
         player.playVideo?.();
       }
-    } catch {
-      // noop
+    } catch (error) {
+      reportIssue("apply-mute-state", "Unable to apply mute/playback state.", error);
     }
-  }, []);
+  }, [reportIssue]);
 
   useImperativeHandle(ref, () => ({
     setMuted(nextMuted) {
@@ -41,11 +51,11 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
     play() {
       try {
         playerRef.current?.playVideo?.();
-      } catch {
-        // noop
+      } catch (error) {
+        reportIssue("manual-play", "Manual play request was blocked.", error);
       }
     }
-  }), [applyMuteState]);
+  }), [applyMuteState, reportIssue]);
 
   useEffect(() => {
     applyMuteState(isMuted, true);
@@ -85,8 +95,8 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
             try {
               event.target.setVolume?.(DEFAULT_VOLUME);
               applyMuteState(mutedRef.current, true);
-            } catch {
-              // noop
+            } catch (error) {
+              reportIssue("ready-handler", "Failed to initialize background music player.", error);
             }
           },
           onStateChange: (event) => {
@@ -94,15 +104,15 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
               if (event.data === window.YT.PlayerState.ENDED) {
                 event.target.playVideo();
               }
-            } catch {
-              // noop
+            } catch (error) {
+              reportIssue("state-change", "Unable to keep background music looping.", error);
             }
           },
           onAutoplayBlocked: () => {
             try {
               applyMuteState(true, true);
-            } catch {
-              // noop
+            } catch (error) {
+              reportIssue("autoplay-blocked", "Autoplay was blocked by the browser.", error);
             }
           }
         }
@@ -123,6 +133,9 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
     } else if (!document.querySelector(`script[src="${API_SRC}"]`)) {
       const script = document.createElement("script");
       script.src = API_SRC;
+      script.onerror = (error) => {
+        reportIssue("api-load", "Failed to load YouTube Iframe API script.", error);
+      };
       document.head.appendChild(script);
     }
 
@@ -138,7 +151,7 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
         playerRef.current = null;
       }
     };
-  }, [applyMuteState]);
+  }, [applyMuteState, reportIssue]);
 
   return (
     <div

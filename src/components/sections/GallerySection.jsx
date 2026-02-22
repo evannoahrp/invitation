@@ -19,8 +19,11 @@ function GallerySection({ images }) {
             <img
               src={src}
               alt={`Moment ${index + 1}`}
+              width="1200"
+              height="800"
               className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 md:h-80"
               loading="lazy"
+              decoding="async"
             />
           </motion.figure>
         ))}

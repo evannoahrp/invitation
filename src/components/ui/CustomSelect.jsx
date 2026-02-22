@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown } from "lucide-react";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
@@ -18,8 +18,12 @@ function CustomSelect({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
   const rootRef = useRef(null);
   const optionRefs = useRef([]);
+  const labelId = useId();
+  const listboxId = useId();
+  const valueId = useId();
 
   useOnClickOutside(rootRef, () => setIsOpen(false));
 
@@ -86,7 +90,7 @@ function CustomSelect({
 
   return (
     <div className="field">
-      {label}
+      <span id={labelId}>{label}</span>
       <div className="custom-dropdown" ref={rootRef}>
         <button
           type="button"
@@ -95,9 +99,22 @@ function CustomSelect({
           onKeyDown={handleTriggerKeyDown}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
+          aria-labelledby={`${labelId} ${valueId}`}
+          aria-controls={listboxId}
         >
-          <span>{value || placeholder}</span>
-          <ChevronDown size={16} className={`select-icon ${isOpen ? "rotate-180" : ""}`} />
+          <span id={valueId}>{value || placeholder}</span>
+          <motion.span
+            className="select-icon-wrap"
+            initial={false}
+            animate={{ rotate: isOpen ? 180 : 0, y: isOpen ? -1 : 0 }}
+            transition={
+              shouldReduceMotion
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 360, damping: 26, mass: 0.65 }
+            }
+          >
+            <ChevronDown size={16} className="select-icon" aria-hidden="true" />
+          </motion.span>
         </button>
 
         <AnimatePresence>
@@ -106,10 +123,11 @@ function CustomSelect({
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+              transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.15, ease: "easeOut" }}
               className="dropdown-menu"
+              id={listboxId}
               role="listbox"
-              aria-label={label}
+              aria-labelledby={labelId}
               onKeyDown={handleKeyNavigation}
             >
               {options.map((option, index) => {
@@ -119,6 +137,7 @@ function CustomSelect({
                   <button
                     key={option}
                     type="button"
+                    id={`${listboxId}-option-${index}`}
                     role="option"
                     aria-selected={isSelected}
                     ref={(node) => {

@@ -12,7 +12,8 @@ function RsvpSection({
   onAttendanceChange,
   onSubmit,
   responses,
-  isLoading
+  isLoading,
+  isSubmitting
 }) {
   const remainingCharacters = MESSAGE_LIMIT - form.message.length;
 
@@ -62,9 +63,13 @@ function RsvpSection({
             </span>
           </label>
 
-          <button className="btn-primary w-full justify-center" type="submit">
+          <button
+            className="btn-primary w-full justify-center disabled:cursor-not-allowed disabled:opacity-70"
+            type="submit"
+            disabled={isSubmitting}
+          >
             <Send size={16} />
-            Submit RSVP
+            {isSubmitting ? "Submitting..." : "Submit RSVP"}
           </button>
         </motion.form>
 

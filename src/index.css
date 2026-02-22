@@ -348,11 +348,13 @@ textarea {
   flex-shrink: 0;
   color: var(--text-soft);
   pointer-events: none;
-  transition: transform 160ms ease;
 }
 
-.select-icon.rotate-180 {
-  transform: rotate(180deg);
+.select-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
 }
 
 .dropdown-menu {
@@ -476,4 +478,23 @@ textarea {
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+
+.pt-10 {
+    padding-top: calc(var(--spacing) * 10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .nav-btn,
+  .mobile-nav-btn,
+  .dropdown-item,
+  .select-icon-wrap {
+    transition: none !important;
+  }
 }
