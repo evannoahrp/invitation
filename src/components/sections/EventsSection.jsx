@@ -21,9 +21,11 @@ function EventsSection({ events }) {
             <p className="row-detail">
               <CalendarDays size={16} /> {event.date}
             </p>
+            <br />
             <p className="row-detail">
               <Clock3 size={16} /> {event.time}
             </p>
+            <br />
             <p className="row-detail">
               <MapPin size={16} /> {event.location}
             </p>
