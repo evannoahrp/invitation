@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { WEDDING_DATE_LABEL } from "../constants/invitationData";
 
-function LoadingScreen({ onReady }) {
+function LoadingScreen({ onReady, onInteraction }) {
   const shouldReduceMotion = useReducedMotion();
   const introTransition = shouldReduceMotion ? { duration: 0 } : { duration: 0.5 };
 
@@ -54,6 +54,9 @@ function LoadingScreen({ onReady }) {
           whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
           whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
           transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.6, duration: 0.5 }}
+          onPointerDown={onInteraction}
+          onTouchStart={onInteraction}
+          onMouseDown={onInteraction}
           onClick={onReady}
           className="btn-primary mx-auto"
         >

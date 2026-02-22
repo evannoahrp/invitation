@@ -148,14 +148,20 @@ function App() {
   }, [setToast]);
 
   const handleSplashOpen = () => {
-    setShowSplash(false);
-    setHasUserScrolled(true); // Mark as scrolled to skip scroll listener
     setIsMusicMuted(false);
     musicControllerRef.current?.setMuted(false);
     musicControllerRef.current?.play();
+    setShowSplash(false);
+    setHasUserScrolled(true); // Mark as scrolled to skip scroll listener
     // Re-enable body scroll
     document.body.style.overflow = 'auto';
   };
+
+  const primeMusicFromGesture = useCallback(() => {
+    setIsMusicMuted(false);
+    musicControllerRef.current?.setMuted(false);
+    musicControllerRef.current?.play();
+  }, []);
 
   // Disable body scroll when splash screen is active
   useEffect(() => {
@@ -290,7 +296,7 @@ function App() {
     <>
       <BackgroundMusic ref={musicControllerRef} isMuted={isMusicMuted} />
       {showSplash ? (
-        <LoadingScreen onReady={handleSplashOpen} />
+        <LoadingScreen onReady={handleSplashOpen} onInteraction={primeMusicFromGesture} />
       ) : (
         <div className="relative min-h-screen overflow-x-hidden bg-(--bg) text-(--text)">
           <DecorativeBackground />

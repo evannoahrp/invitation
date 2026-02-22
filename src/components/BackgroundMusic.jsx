@@ -4,6 +4,7 @@ const YOUTUBE_URL = "https://youtu.be/DNbKs0Na_sc?si=ZejG7424uf3ull39";
 const VIDEO_ID = new URL(YOUTUBE_URL).pathname.replace("/", "");
 const API_SRC = "https://www.youtube.com/iframe_api";
 const DEFAULT_VOLUME = 80;
+const ORIGIN = typeof window !== "undefined" ? window.location.origin : undefined;
 
 const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, ref) {
   const playerRef = useRef(null);
@@ -142,10 +143,12 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
           autoplay: 1,
           controls: 0,
           disablekb: 1,
+          enablejsapi: 1,
           fs: 0,
           loop: 1,
           mute: 1,
           modestbranding: 1,
+          origin: ORIGIN,
           playsinline: 1,
           rel: 0,
           playlist: VIDEO_ID
@@ -153,6 +156,9 @@ const BackgroundMusic = forwardRef(function BackgroundMusic({ isMuted = true }, 
         events: {
           onReady: (event) => {
             try {
+              const iframe = event.target.getIframe?.();
+              iframe?.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture");
+              iframe?.setAttribute("playsinline", "1");
               event.target.setVolume?.(DEFAULT_VOLUME);
               applyMuteState(mutedRef.current, true);
             } catch (error) {
