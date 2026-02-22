@@ -4,7 +4,7 @@ import { fadeInUp } from "../../constants/motion";
 function GallerySection({ images }) {
   return (
     <section id="gallery" className="space-y-6">
-      <motion.h2 {...fadeInUp} className="section-title">
+      <motion.h2 {...fadeInUp} className="section-title section-heading-accent">
         Moments Gallery
       </motion.h2>
 
@@ -14,7 +14,7 @@ function GallerySection({ images }) {
             key={src}
             {...fadeInUp}
             transition={{ ...fadeInUp.transition, delay: index * 0.05 }}
-            className="group overflow-hidden rounded-3xl"
+            className="group gallery-frame overflow-hidden rounded-3xl"
           >
             <img
               src={src}
