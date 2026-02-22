@@ -6,8 +6,29 @@ import flowers4 from "../assets/floral/flowers4.svg";
 
 function DecorativeBackground() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+
+    const applyViewportMode = () => {
+      setIsMobileViewport(media.matches);
+    };
+
+    applyViewportMode();
+    media.addEventListener("change", applyViewportMode);
+
+    return () => {
+      media.removeEventListener("change", applyViewportMode);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobileViewport) {
+      setParallaxOffset(0);
+      return undefined;
+    }
+
     let frameId = null;
 
     const handleScroll = () => {
@@ -29,7 +50,7 @@ function DecorativeBackground() {
 
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isMobileViewport]);
 
   return (
     <div className="decorative-bg pointer-events-none fixed inset-0 z-0 overflow-hidden">
