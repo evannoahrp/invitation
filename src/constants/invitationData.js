@@ -32,7 +32,7 @@ export const EVENT_CARDS = [
   {
     title: "Holy Matrimony",
     date: WEDDING_DATE_LABEL,
-    time: "09:00 - 10:30 (Western Indonesia Time)",
+    time: "10:00 (Western Indonesia Time)",
     location: "Gideon Church",
     address: "Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/g38AMMVWAKa8HKQp8"
@@ -40,7 +40,7 @@ export const EVENT_CARDS = [
   {
     title: "Reception",
     date: WEDDING_DATE_LABEL,
-    time: "11:30 - 14:30 (Western Indonesia Time)",
+    time: "12:00 onwards (Western Indonesia Time)",
     location: "Bride's Parents' Residence",
     address: "Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/8VPNq8cfuTKNyL6Q9"
