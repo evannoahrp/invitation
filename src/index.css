@@ -408,7 +408,7 @@ textarea {
   transform: translateX(-50%);
   width: min(95%, 30rem);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.3rem;
   padding: 0.4rem;
   border-radius: 1.1rem;
