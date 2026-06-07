@@ -324,7 +324,7 @@ function App() {
             <ProfilesSection profiles={COUPLE_BIODATA} />
             <GallerySection images={GALLERY} />
             <GiftsSection accounts={BANK_ACCOUNTS} copiedKey={copiedKey} onCopy={handleCopyAccount} />
-            <RsvpSection
+            {/* <RsvpSection
               form={form}
               attendanceOptions={ATTENDANCE_OPTIONS}
               onFieldChange={updateFormField}
@@ -333,7 +333,7 @@ function App() {
               responses={responses}
               isLoading={isLoadingRsvp}
               isSubmitting={isSubmittingRsvp}
-            />
+            /> */}
           </main>
 
           <div className="relative z-10">

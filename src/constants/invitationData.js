@@ -6,8 +6,8 @@ import image3 from "../assets/images/DSC02284.JPG";
 import image4 from "../assets/images/SCP07645.jpg";
 import image5 from "../assets/images/SCP07669.jpg";
 
-import solo1a from "../assets/images/DSC02347.JPG";
-import solo2a from "../assets/images/DSC02352.JPG";
+import solo1 from "../assets/images/DSC02347.JPG";
+import solo2 from "../assets/images/DSC02352.JPG";
 
 export const INVITATION_BRAND = "Evan & Fila";
 
@@ -20,7 +20,7 @@ export const NAV_ITEMS = [
   { label: "Events", id: "events" },
   { label: "Profiles", id: "profiles" },
   { label: "Gallery", id: "gallery" },
-  { label: "RSVP", id: "rsvp" }
+  // { label: "RSVP", id: "rsvp" }
 ];
 
 export const ATTENDANCE_OPTIONS = [
@@ -62,7 +62,7 @@ export const COUPLE_BIODATA = [
     fullName: "Evannoah Rolimarch Pratama, S.Kom.",
     childOrder: "First child of two siblings",
     parents: "Son of Mr. Josia Jonlie and Mrs. Rony Prastiwi",
-    fullBodyPhoto: solo1a
+    fullBodyPhoto: solo1
   },
   {
     role: "The Bride",
@@ -70,7 +70,7 @@ export const COUPLE_BIODATA = [
     fullName: "Apt. Fila Delfia, S.Farm.",
     childOrder: "Second child of two siblings",
     parents: "Daughter of Mr. Agus Dwi Susanto and Mrs. Widuri",
-    fullBodyPhoto: solo2a
+    fullBodyPhoto: solo2
   }
 ];
 
@@ -78,5 +78,5 @@ export const GALLERY = [image1, image2, image3, image4, image5];
 
 export const BANK_ACCOUNTS = [
   { bank: "BCA", number: "8600167201", name: "Account Name: Evannoah Rolimarch Pratama" },
-  { bank: "Wedding Gift", number: "Jl. Komp. Perumahan Serpong Terrace No.3 Blok B1, Buaran, Kec. Serpong, Kota Tangerang Selatan, Banten 15310", name: "" }
+  { bank: "Wedding Gift", number: "Jl. Komp. Perumahan Serpong Terrace Blok B1 No.3, Buaran, Kec. Serpong, Kota Tangerang Selatan, Banten 15310", name: "" }
 ];
