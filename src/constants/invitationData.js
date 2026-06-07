@@ -3,14 +3,11 @@ import { formatEventDate } from "../utils/time";
 import image1 from "../assets/images/DSC02399.JPG";
 import image2 from "../assets/images/DSC02404.JPG";
 import image3 from "../assets/images/DSC02284.JPG";
-import image4 from "../assets/images/DSC02274.JPG";
-import image5 from "../assets/images/SCP07645.jpg";
-import image6 from "../assets/images/SCP07669.jpg";
+import image4 from "../assets/images/SCP07645.jpg";
+import image5 from "../assets/images/SCP07669.jpg";
 
 import solo1a from "../assets/images/DSC02347.JPG";
-import solo1b from "../assets/images/SCP07676.jpg";
 import solo2a from "../assets/images/DSC02352.JPG";
-import solo2b from "../assets/images/SCP07717.jpg";
 
 export const INVITATION_BRAND = "Evan & Fila";
 
@@ -54,8 +51,8 @@ export const CAROUSEL_IMAGES = [
   {src: image1, alt: "", caption: "", width: 1200, height: 800},
   {src: image2, alt: "", caption: "", width: 1200, height: 800},
   {src: image3, alt: "", caption: "", width: 1200, height: 800},
-  {src: image5, alt: "", caption: "", width: 1200, height: 800},
-  {src: image6, alt: "", caption: "", width: 1200, height: 800}
+  {src: image4, alt: "", caption: "", width: 1200, height: 800},
+  {src: image5, alt: "", caption: "", width: 1200, height: 800}
 ];
 
 export const COUPLE_BIODATA = [
@@ -77,7 +74,7 @@ export const COUPLE_BIODATA = [
   }
 ];
 
-export const GALLERY = [image1, image2, image3, image5, image6];
+export const GALLERY = [image1, image2, image3, image4, image5];
 
 export const BANK_ACCOUNTS = [
   { bank: "BCA", number: "8600167201", name: "Account Name: Evannoah Rolimarch Pratama" },
