@@ -33,7 +33,7 @@ export const EVENT_CARDS = [
     title: "Holy Matrimony",
     date: WEDDING_DATE_LABEL,
     time: "10:00 (Western Indonesia Time)",
-    location: "Gideon Church",
+    location: "Gereja Anugerah Injil Sepenuh Gideon",
     address: "Jl. Mawar 1 Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/g38AMMVWAKa8HKQp8"
   },
