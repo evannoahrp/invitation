@@ -28,17 +28,32 @@ function GiftsSection({ accounts, copiedKey, onCopy }) {
                 <Gift size={14} /> {item.bank}
               </p>
               <div>
-                <p className="font-heading text-2xl">{item.number}</p>
-                <p className="text-sm text-[var(--text-soft)]">Account Name: {item.name}</p>
+                {item.bank !== "Wedding Gift" && (
+                  <>
+                    <p className="font-heading text-2xl">{item.number}</p>
+                    <p className="text-sm text-[var(--text-soft)]">{item.name}</p>
+                  </>
+                )}
               </div>
-              <button
-                className="btn-secondary w-full justify-center"
-                onClick={() => onCopy(item.number, key)}
-                type="button"
-              >
-                {isCopied ? <Check size={16} /> : <Copy size={16} />}
-                {isCopied ? "Copied" : "Copy Account Number"}
-              </button>
+              {item.bank === "Wedding Gift" && (
+                <p className="text-sm text-[var(--text-soft)]">{item.number}</p>
+              )}
+              {item.bank !== "Wedding Gift" && (
+                <>
+                  <button className="btn-secondary w-full justify-center"onClick={() => onCopy(item.number, key)}type="button">
+                    {isCopied ? <Check size={16} /> : <Copy size={16} />}
+                    {isCopied ? "Copied" : "Copy Account Number"}
+                  </button>
+                </>
+              )}
+              {item.bank === "Wedding Gift" && (
+                <>
+                  <button className="btn-secondary w-full justify-center"onClick={() => onCopy(item.number, key)}type="button">
+                    {isCopied ? <Check size={16} /> : <Copy size={16} />}
+                    {isCopied ? "Copied" : "Copy"}
+                  </button>
+                </>
+              )}
             </motion.article>
           );
         })}

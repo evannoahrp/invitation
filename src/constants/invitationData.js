@@ -1,5 +1,17 @@
 import { formatEventDate } from "../utils/time";
 
+import image1 from "../assets/images/DSC02399.JPG";
+import image2 from "../assets/images/DSC02404.JPG";
+import image3 from "../assets/images/DSC02284.JPG";
+import image4 from "../assets/images/DSC02274.JPG";
+import image5 from "../assets/images/SCP07645.jpg";
+import image6 from "../assets/images/SCP07669.jpg";
+
+import solo1a from "../assets/images/DSC02347.JPG";
+import solo1b from "../assets/images/SCP07676.jpg";
+import solo2a from "../assets/images/DSC02352.JPG";
+import solo2b from "../assets/images/SCP07717.jpg";
+
 export const INVITATION_BRAND = "Evan & Fila";
 
 export const WEDDING_DATE = new Date("2026-07-04T09:00:00+07:00").getTime();
@@ -39,34 +51,11 @@ export const EVENT_CARDS = [
 ];
 
 export const CAROUSEL_IMAGES = [
-  {
-    src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
-    alt: "Romantic sunset moment",
-    caption: "Our journey begins with love",
-    width: 1200,
-    height: 800
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
-    alt: "Engagement celebration",
-    caption: "Forever starts today",
-    width: 1200,
-    height: 800
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1200&q=80",
-    alt: "Beautiful wedding venue",
-    caption: "Where love comes together",
-    width: 1200,
-    height: 800
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
-    alt: "Happy couple",
-    caption: "Two hearts, one love",
-    width: 1200,
-    height: 800
-  }
+  {src: image1, alt: "", caption: "", width: 1200, height: 800},
+  {src: image2, alt: "", caption: "", width: 1200, height: 800},
+  {src: image3, alt: "", caption: "", width: 1200, height: 800},
+  {src: image5, alt: "", caption: "", width: 1200, height: 800},
+  {src: image6, alt: "", caption: "", width: 1200, height: 800}
 ];
 
 export const COUPLE_BIODATA = [
@@ -76,25 +65,21 @@ export const COUPLE_BIODATA = [
     fullName: "Evannoah Rolimarch Pratama, S.Kom.",
     childOrder: "First child of two siblings",
     parents: "Son of Mr. Josia Jonlie and Mrs. Rony Prastiwi",
-    fullBodyPhoto: "https://placehold.co/700x980/f4ece4/7a5d46?text=Groom+Full+Body+Photo"
+    fullBodyPhoto: solo1a
   },
   {
     role: "The Bride",
     nickname: "Fila",
     fullName: "Apt. Fila Delfia, S.Farm.",
     childOrder: "Second child of two siblings",
-    parents: "Daughter of Mr. Agus Dwi Susanto and Mrs. Sunarti",
-    fullBodyPhoto: "https://placehold.co/700x980/f4ece4/7a5d46?text=Bride+Full+Body+Photo"
+    parents: "Daughter of Mr. Agus Dwi Susanto and Mrs. Widuri",
+    fullBodyPhoto: solo2a
   }
 ];
 
-export const GALLERY = [
-  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80"
-];
+export const GALLERY = [image1, image2, image3, image5, image6];
 
 export const BANK_ACCOUNTS = [
-  { bank: "BCA", number: "8600167201", name: "Evannoah Rolimarch Pratama" }
+  { bank: "BCA", number: "8600167201", name: "Account Name: Evannoah Rolimarch Pratama" },
+  { bank: "Wedding Gift", number: "Jl. Komp. Perumahan Serpong Terrace No.3 Blok B1, Buaran, Kec. Serpong, Kota Tangerang Selatan, Banten 15310", name: "" }
 ];

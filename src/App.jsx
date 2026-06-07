@@ -209,7 +209,7 @@ function App() {
     try {
       await navigator.clipboard.writeText(value);
       setCopiedKey(key);
-      setToast("The account number has been copied successfully.");
+      setToast("Copied successfully.");
 
       if (copyResetTimeoutRef.current) {
         clearTimeout(copyResetTimeoutRef.current);
