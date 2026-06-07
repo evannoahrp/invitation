@@ -34,7 +34,7 @@ export const EVENT_CARDS = [
     date: WEDDING_DATE_LABEL,
     time: "10:00 (Western Indonesia Time)",
     location: "Gideon Church",
-    address: "Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
+    address: "Jl. Mawar 1 Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/g38AMMVWAKa8HKQp8"
   },
   {
@@ -42,7 +42,7 @@ export const EVENT_CARDS = [
     date: WEDDING_DATE_LABEL,
     time: "12:00 onwards (Western Indonesia Time)",
     location: "Bride's Parents' Residence",
-    address: "Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
+    address: "Jl. Mawar 1 No.14 Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/8VPNq8cfuTKNyL6Q9"
   }
 ];
