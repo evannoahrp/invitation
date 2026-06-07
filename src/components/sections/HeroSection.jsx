@@ -29,9 +29,9 @@ function HeroSection({ brand, guestName, countdown, onNavigate }) {
           <button className="btn-primary" onClick={() => onNavigate("events")} type="button">
             <CalendarDays size={17} /> View Event Details
           </button>
-          <button className="btn-secondary" onClick={() => onNavigate("rsvp")} type="button">
+          {/* <button className="btn-secondary" onClick={() => onNavigate("rsvp")} type="button">
             <Send size={17} /> Confirm Attendance
-          </button>
+          </button> */}
         </div>
       </motion.div>
 
