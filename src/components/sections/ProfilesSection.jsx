@@ -16,7 +16,7 @@ function ProfilesSection({ profiles }) {
             transition={{ ...fadeInUp.transition, delay: index * 0.08 }}
             className="glass-card space-y-4 p-6 md:p-8"
           >
-            <figure className="overflow-hidden rounded-3xl border border-[var(--border)]/80 bg-white/60">
+            {/* <figure className="overflow-hidden rounded-3xl border border-[var(--border)]/80 bg-white/60">
               <img
                 src={person.fullBodyPhoto}
                 alt={`${person.role} full body portrait`}
@@ -26,7 +26,7 @@ function ProfilesSection({ profiles }) {
                 loading="lazy"
                 decoding="async"
               />
-            </figure>
+            </figure> */}
             <p className="chip inline-flex">{person.role}</p>
             <h3 className="font-heading text-3xl">{person.nickname}</h3>
             <div className="space-y-2 text-[var(--text-soft)]">
