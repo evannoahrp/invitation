@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { WEDDING_DATE_LABEL } from "../constants/invitationData";
+import { WEDDING_DATE_LABELI, WEDDING_DATE_LABELII } from "../constants/invitationData";
 
 function LoadingScreen({ onReady, onInteraction }) {
   const shouldReduceMotion = useReducedMotion();
@@ -43,7 +43,7 @@ function LoadingScreen({ onReady, onInteraction }) {
             "Love is patient, love is kind"
           </p>
           <p className="text-xs text-(--text-soft)">
-            {WEDDING_DATE_LABEL}
+            {WEDDING_DATE_LABELII}
           </p>
         </motion.div>
 

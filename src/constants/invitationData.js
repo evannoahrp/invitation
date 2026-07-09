@@ -16,10 +16,12 @@ import image8 from "../assets/images/8.jpg";
 
 export const INVITATION_BRAND = "Evan & Fila";
 
-export const WEDDING_DATE = new Date("2026-07-04T09:00:00+07:00").getTime();
+export const WEDDING_DATEI = new Date("2026-07-04T10:00:00+07:00").getTime();
+export const WEDDING_DATEII = new Date("2026-08-08T16:00:00+07:00").getTime();
 export const INVITATION_LOCALE = "en-US";
 export const EVENT_TIME_ZONE = "Asia/Jakarta";
-export const WEDDING_DATE_LABEL = formatEventDate(WEDDING_DATE, INVITATION_LOCALE, EVENT_TIME_ZONE);
+export const WEDDING_DATE_LABELI = formatEventDate(WEDDING_DATEI, INVITATION_LOCALE, EVENT_TIME_ZONE);
+export const WEDDING_DATE_LABELII = formatEventDate(WEDDING_DATEII, INVITATION_LOCALE, EVENT_TIME_ZONE);
 
 export const NAV_ITEMS = [
   { label: "Events", id: "events" },
@@ -36,19 +38,27 @@ export const ATTENDANCE_OPTIONS = [
 export const EVENT_CARDS = [
   {
     title: "Holy Matrimony",
-    date: WEDDING_DATE_LABEL,
+    date: WEDDING_DATE_LABELI,
     time: "10:00 (Western Indonesia Time)",
     location: "Gereja Anugerah Injil Sepenuh Gideon",
     address: "Jl. Mawar 1 Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/g38AMMVWAKa8HKQp8"
   },
   {
-    title: "Reception",
-    date: WEDDING_DATE_LABEL,
+    title: "Javanese Traditional Ceremony & Reception",
+    date: WEDDING_DATE_LABELI,
     time: "12:00 onwards (Western Indonesia Time)",
     location: "Bride's Parents' Residence",
     address: "Jl. Mawar 1 No.14 Batang Batindih, Rumbio Jaya, Kampar Regency, Riau, 28458",
     mapUrl: "https://maps.app.goo.gl/8VPNq8cfuTKNyL6Q9"
+  },
+  {
+    title: "Dayak Traditional Ceremony & Reception",
+    date: WEDDING_DATE_LABELII,
+    time: "15:00 onwards (Western Indonesia Time)",
+    location: "Groom's Parents' Residence",
+    address: "Jl. Raden Saleh I No.8A, Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan 73112",
+    mapUrl: "https://maps.app.goo.gl/dKrrfYwbdkSLRXN16"
   }
 ];
 

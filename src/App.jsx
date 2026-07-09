@@ -24,7 +24,8 @@ import {
   GALLERY,
   INVITATION_BRAND,
   NAV_ITEMS,
-  WEDDING_DATE
+  WEDDING_DATEI,
+  WEDDING_DATEII
 } from "./constants/invitationData";
 import { useActiveSection } from "./hooks/useActiveSection";
 import { useAutoDismissMessage } from "./hooks/useAutoDismissMessage";
@@ -55,7 +56,7 @@ async function requestRsvpApi(options) {
 }
 
 function App() {
-  const countdown = useCountdown(WEDDING_DATE);
+  const countdown = useCountdown(WEDDING_DATEII);
   const scrollProgress = useScrollProgress();
   const guestName = useGuestName();
   const activeSection = useActiveSection(NAV_ITEMS.map((item) => item.id));
